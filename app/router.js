@@ -13,9 +13,9 @@ import WidgetList from './components/widget-list';
 
 export default(
 	<Router history={browserHistory}>
-		<Route component={MainLayout}>
+		<Route path="/" component={MainLayout}>
 
-			<Route path="/" component={Home} />
+			<IndexRoute component={Home} />
 
 			<Route path="users">
 				<Route component={SearchLayout}>
