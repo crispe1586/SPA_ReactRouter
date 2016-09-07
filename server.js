@@ -9,7 +9,8 @@ app.use(express.static(path.join(__dirname,'public'),{
 }));
 
 app.get('*', function(req, res, next) {
-  res.sendFile(path.resolve(__dirname, '/public/index.html'));
+	//console.log(__dirname);
+  res.sendFile(path.resolve(__dirname, './public/index.html'));
 });
 
 //Error
