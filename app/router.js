@@ -2,15 +2,15 @@ import React from 'react';
 import { Router, Route, browserHistory, IndexRoute} from 'react-router';
 
 //Get layouts
-import MainLayout from './components/main-layout';
-import SearchLayout from './components/search-layout';
+import MainLayout from './components/layouts/main-layout';
+import SearchLayout from './components/layouts/search-layout';
 
 //Get components
-import Home from './components/home';
-import UserList from './components/user-list';
-import UserProfile from './components/user-profile';
-import WidgetList from './components/widget-list';
-import WidgetProfile from './components/widget-profile';
+import Home from './components/views/home';
+import UserList from './components/views/user-list';
+import UserProfile from './components/views/user-profile';
+import WidgetList from './components/views/widget-list';
+import WidgetProfile from './components/views/widget-profile';
 
 
 export default(
