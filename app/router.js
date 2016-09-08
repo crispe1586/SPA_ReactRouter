@@ -5,12 +5,14 @@ import { Router, Route, browserHistory, IndexRoute} from 'react-router';
 import MainLayout from './components/layouts/main-layout';
 import SearchLayout from './components/layouts/search-layout';
 
-//Get components
+//Get views
 import Home from './components/views/home';
-import UserList from './components/views/user-list';
-import UserProfile from './components/views/user-profile';
-import WidgetList from './components/views/widget-list';
-import WidgetProfile from './components/views/widget-profile';
+
+//Get containers
+import UserList from './components/containers/user-list-container';
+import UserProfile from './components/containers/user-profile-container';
+import WidgetList from './components/containers/widget-list-container';
+import WidgetProfile from './components/containers/widget-profile-container';
 
 
 export default(
@@ -20,16 +22,16 @@ export default(
 
 			<Route path="users">
 				<Route component={SearchLayout}>
-					<IndexRoute component={UserList} />
+					<IndexRoute component={UserListContainer} />
 				</Route>
-				<Route path=":userId" component={UserProfile} />
+				<Route path=":userId" component={UserProfileContainer} />
 			</Route>
 
 			<Route path="widgets">
 				<Route component={SearchLayout}>
-					<IndexRoute component={WidgetList} />
+					<IndexRoute component={WidgetListContainer} />
 				</Route>
-				<Route path=":widgetId" component={WidgetProfile} />
+				<Route path=":widgetId" component={WidgetProfileContainer} />
 				
 			</Route>
 			

@@ -9,7 +9,9 @@ app.use(express.static(path.join(__dirname,'public'),{
 }));
 
 // Set engine sea react-engine 
+//app.engine('.jsx', engine.server.create());
 app.engine('.jsx', engine.server.create());
+
 // Set view route
 app.set('views', path.join(__dirname, 'app/components/views'));
 // the engine will use jsx files

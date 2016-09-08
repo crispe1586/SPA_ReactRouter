@@ -3,14 +3,24 @@ import React from 'react';
 const WidgetProfile = React.createClass({
 	render: function(){
 		return (
-			<div className="WidgetProfile">
-				<header className="WidgetProfile-header">
-					<h1>Widget profile for widgetId: {this.props.params.widgetId}</h1>
-				</header>
-				<main>
-					Widget profile content
-				</main>
-				<footer className="WidgetProfile-footer">Widget Footer</footer>
+			<div className="widget-profile">
+				<img src={this.props.imageUrl} />
+				<div className="details">
+					<h1>{this.props.name}</h1>
+					<a href={'http://twitter.com/'+this.props.twitter}>@{this.props.twitter}</a>
+					<p>Works on <strong>{this.props.worksOn}</strong></p>
+					<h3>Github Repos:</h3>
+					<ul class="repos">
+						{this.props.repos.map(function(repo){
+							return (
+								<li key={repo.id}>
+									<a href={repo.html_url}>{repo.name}</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+
 			</div>
 		);
 	}

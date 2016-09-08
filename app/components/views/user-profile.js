@@ -3,14 +3,24 @@ import React from 'react';
 const UserProfile = React.createClass({
 	render: function(){
 		return(
-			<div className="UserProfile">
-				<header className="UserProfile-header">
-					<h1>User profile for userId: {this.props.params.userId}</h1>
-				</header>
-				<main>
-					User profile content
-				</main>
-				<footer className="UserProfile-footer">User Footer</footer>
+			<div className="user-profile">
+				<img src={this.props.imageUrl} />
+				<div className="details">
+					<h1>{this.props.name}</h1>
+					<a href={'http://twitter.com/'+this.props.twitter}>@{this.props.twitter}</a>
+					<p>Works on <strong>{this.props.worksOn}</strong></p>
+					<h3>Github Repos:</h3>
+					<ul class="repos">
+						{this.props.repos.map(function(repo){
+							return (
+								<li key={repo.id}>
+									<a href={repo.html_url}>{repo.name}</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+
 			</div>
 		);
 	}

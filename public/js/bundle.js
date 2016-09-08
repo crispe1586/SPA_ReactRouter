@@ -19780,24 +19780,25 @@
 	
 	var _home2 = _interopRequireDefault(_home);
 	
-	var _userList = __webpack_require__(220);
+	var _userListContainer = __webpack_require__(220);
 	
-	var _userList2 = _interopRequireDefault(_userList);
+	var _userListContainer2 = _interopRequireDefault(_userListContainer);
 	
-	var _userProfile = __webpack_require__(221);
+	var _userProfileContainer = __webpack_require__(222);
 	
-	var _userProfile2 = _interopRequireDefault(_userProfile);
+	var _userProfileContainer2 = _interopRequireDefault(_userProfileContainer);
 	
-	var _widgetList = __webpack_require__(222);
+	var _widgetListContainer = __webpack_require__(224);
 	
-	var _widgetList2 = _interopRequireDefault(_widgetList);
+	var _widgetListContainer2 = _interopRequireDefault(_widgetListContainer);
 	
-	var _widgetProfile = __webpack_require__(223);
+	var _widgetProfileContainer = __webpack_require__(226);
 	
-	var _widgetProfile2 = _interopRequireDefault(_widgetProfile);
+	var _widgetProfileContainer2 = _interopRequireDefault(_widgetProfileContainer);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	//Get containers
 	exports.default = _react2.default.createElement(
 		_reactRouter.Router,
 		{ history: _reactRouter.browserHistory },
@@ -19811,9 +19812,9 @@
 				_react2.default.createElement(
 					_reactRouter.Route,
 					{ component: _searchLayout2.default },
-					_react2.default.createElement(_reactRouter.IndexRoute, { component: _userList2.default })
+					_react2.default.createElement(_reactRouter.IndexRoute, { component: UserListContainer })
 				),
-				_react2.default.createElement(_reactRouter.Route, { path: ':userId', component: _userProfile2.default })
+				_react2.default.createElement(_reactRouter.Route, { path: ':userId', component: UserProfileContainer })
 			),
 			_react2.default.createElement(
 				_reactRouter.Route,
@@ -19821,14 +19822,14 @@
 				_react2.default.createElement(
 					_reactRouter.Route,
 					{ component: _searchLayout2.default },
-					_react2.default.createElement(_reactRouter.IndexRoute, { component: _widgetList2.default })
+					_react2.default.createElement(_reactRouter.IndexRoute, { component: WidgetListContainer })
 				),
-				_react2.default.createElement(_reactRouter.Route, { path: ':widgetId', component: _widgetProfile2.default })
+				_react2.default.createElement(_reactRouter.Route, { path: ':widgetId', component: WidgetProfileContainer })
 			)
 		)
 	);
 	
-	//Get components
+	//Get views
 	
 	
 	//Get layouts
@@ -25088,6 +25089,70 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _lodash = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"lodash\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	
+	var _lodash2 = _interopRequireDefault(_lodash);
+	
+	var _userList = __webpack_require__(221);
+	
+	var _userList2 = _interopRequireDefault(_userList);
+	
+	var _userApi = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../api/user-api\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	
+	var userApi = _interopRequireWildcard(_userApi);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var UserListContainer = _react2.default.createClass({
+		displayName: 'UserListContainer',
+	
+		getInitialState: function getInitialState() {
+			return {
+				users: []
+			};
+		},
+		componentDidMount: function componentDidMount() {
+			var _this = this;
+	
+			userApi.getUsers().then(function (users) {
+				_this.setState({ users: users });
+			});
+		},
+	
+		deleteUser: function deleteUser(userId) {
+			var _this2 = this;
+	
+			userApi.deleteUser(userId).then(function () {
+				var newUsers = _lodash2.default.filter(_this2.state.users, function (user) {
+					return user.id != userId;
+				});
+				_this2.setState({ users: newUsers });
+			});
+		},
+		render: function render() {
+			return _react2.default.createElement(_userList2.default, { users: this.state.users, deleteUser: this.deleteUser });
+		}
+	
+	});
+	
+	exports.default = UserListContainer;
+
+/***/ },
+/* 221 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
 	var _reactRouter = __webpack_require__(160);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -25098,56 +25163,32 @@
 		render: function render() {
 			return _react2.default.createElement(
 				'div',
-				{ className: 'UserList' },
-				_react2.default.createElement(
-					'ul',
-					{ className: 'user-list' },
-					_react2.default.createElement(
-						'li',
-						null,
+				{ className: 'data-list' },
+				this.props.users.map(function (user) {
+					return _react2.default.createElement(
+						'div',
+						{ key: user.id, className: 'data-list-item' },
 						_react2.default.createElement(
-							_reactRouter.Link,
-							{ to: 'users/1' },
-							'Miguel'
-						)
-					),
-					_react2.default.createElement(
-						'li',
-						null,
+							'div',
+							{ className: 'details' },
+							_react2.default.createElement(
+								_reactRouter.Link,
+								{ to: '/users/' + user.id },
+								user.name
+							)
+						),
 						_react2.default.createElement(
-							_reactRouter.Link,
-							{ to: 'users/2' },
-							'Cristina'
+							'div',
+							{ className: 'controls' },
+							_react2.default.createElement(
+								'button',
+								{ onClick: this.props.deleteUser.bind(null, user.id), className: 'delete' },
+								'Delete'
+							)
 						)
-					),
-					_react2.default.createElement(
-						'li',
-						null,
-						_react2.default.createElement(
-							_reactRouter.Link,
-							{ to: 'users/3' },
-							'Juana'
-						)
-					),
-					_react2.default.createElement(
-						'li',
-						null,
-						_react2.default.createElement(
-							_reactRouter.Link,
-							{ to: 'users/4' },
-							'Fernanda'
-						)
-					),
-					_react2.default.createElement(
-						'li',
-						null,
-						_react2.default.createElement(
-							_reactRouter.Link,
-							{ to: 'users/5' },
-							'Antonia'
-						)
-					)
-				)
+					);
+				}),
+				';'
 			);
 		}
 	});
@@ -25155,7 +25196,66 @@
 	exports.default = UserList;
 
 /***/ },
-/* 221 */
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _userProfile = __webpack_require__(223);
+	
+	var _userProfile2 = _interopRequireDefault(_userProfile);
+	
+	var _userApi = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../api/user-api\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	
+	var userApi = _interopRequireWildcard(_userApi);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var UserProfileContainer = _react2.default.createClass({
+		displayName: 'UserProfileContainer',
+	
+		getInitialState: function getInitialState() {
+			return {
+				name: null,
+				imageUrl: null,
+				twitter: null,
+				worksOn: null,
+				repos: []
+			};
+		},
+		componentDidMount: function componentDidMount() {
+			var _this = this;
+	
+			var userId = this.props.params.userId;
+			userApi.getProfile(userId).then(function (profile) {
+				_this.setState({
+					name: profile.name,
+					imageUrl: profile.imageUrl,
+					twitter: profile.twitter,
+					worksOn: profile.worksOn,
+					repos: profile.repos
+				});
+			});
+		},
+		render: function render() {
+			return _react2.default.createElement(_userProfile2.default, { name: this.state.name, imageUrl: this.state.imageUrl, twitter: this.state.twitter, worksOn: this.state.worksOn, repos: this.state.repos });
+		}
+	});
+	
+	exports.default = UserProfileContainer;
+
+/***/ },
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25176,26 +25276,52 @@
 		render: function render() {
 			return _react2.default.createElement(
 				"div",
-				{ className: "UserProfile" },
+				{ className: "user-profile" },
+				_react2.default.createElement("img", { src: this.props.imageUrl }),
 				_react2.default.createElement(
-					"header",
-					{ className: "UserProfile-header" },
+					"div",
+					{ className: "details" },
 					_react2.default.createElement(
 						"h1",
 						null,
-						"User profile for userId: ",
-						this.props.params.userId
+						this.props.name
+					),
+					_react2.default.createElement(
+						"a",
+						{ href: 'http://twitter.com/' + this.props.twitter },
+						"@",
+						this.props.twitter
+					),
+					_react2.default.createElement(
+						"p",
+						null,
+						"Works on ",
+						_react2.default.createElement(
+							"strong",
+							null,
+							this.props.worksOn
+						)
+					),
+					_react2.default.createElement(
+						"h3",
+						null,
+						"Github Repos:"
+					),
+					_react2.default.createElement(
+						"ul",
+						{ "class": "repos" },
+						this.props.repos.map(function (repo) {
+							return _react2.default.createElement(
+								"li",
+								{ key: repo.id },
+								_react2.default.createElement(
+									"a",
+									{ href: repo.html_url },
+									repo.name
+								)
+							);
+						})
 					)
-				),
-				_react2.default.createElement(
-					"main",
-					null,
-					"User profile content"
-				),
-				_react2.default.createElement(
-					"footer",
-					{ className: "UserProfile-footer" },
-					"User Footer"
 				)
 			);
 		}
@@ -25204,7 +25330,74 @@
 	exports.default = UserProfile;
 
 /***/ },
-/* 222 */
+/* 224 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _lodash = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"lodash\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	
+	var _lodash2 = _interopRequireDefault(_lodash);
+	
+	var _widgetList = __webpack_require__(225);
+	
+	var _widgetList2 = _interopRequireDefault(_widgetList);
+	
+	var _widgetApi = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../api/widget-api\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	
+	var widgetApi = _interopRequireWildcard(_widgetApi);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var WidgetListContainer = _react2.default.createClass({
+	  displayName: 'WidgetListContainer',
+	
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      widgets: []
+	    };
+	  },
+	
+	  componentDidMount: function componentDidMount() {
+	    var _this = this;
+	
+	    widgetApi.getWidgets().then(function (widgets) {
+	      _this.setState({ widgets: widgets });
+	    });
+	  },
+	
+	  deleteWidget: function deleteWidget(widgetId) {
+	    var _this2 = this;
+	
+	    widgetApi.deleteWidget(widgetId).then(function () {
+	      var newWidgets = _lodash2.default.filter(_this2.state.widgets, function (widget) {
+	        return widget.id != widgetId;
+	      });
+	      _this2.setState({ widgets: newWidgets });
+	    });
+	  },
+	
+	  render: function render() {
+	    return _react2.default.createElement(_widgetList2.default, { widgets: this.state.widgets, deleteWidget: this.deleteWidget });
+	  }
+	
+	});
+	
+	exports.default = WidgetListContainer;
+
+/***/ },
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25275,7 +25468,66 @@
 	exports.default = WidgetList;
 
 /***/ },
-/* 223 */
+/* 226 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _widgetProfile = __webpack_require__(227);
+	
+	var _widgetProfile2 = _interopRequireDefault(_widgetProfile);
+	
+	var _widgetApi = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../api/widget-api\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	
+	var widgetApi = _interopRequireWildcard(_widgetApi);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var WidgetProfileContainer = _react2.default.createClass({
+		displayName: 'WidgetProfileContainer',
+	
+		getInitialState: function getInitialState() {
+			return {
+				name: null,
+				imageUrl: null,
+				twitter: null,
+				worksOn: null,
+				repos: []
+			};
+		},
+		componentDidMount: function componentDidMount() {
+			var _this = this;
+	
+			var widgetId = this.props.params.widgetId;
+			widgetApi.getProfile(widgetId).then(function (profile) {
+				_this.setState({
+					name: profile.name,
+					imageUrl: profile.imageUrl,
+					twitter: profile.twitter,
+					worksOn: profile.worksOn,
+					repos: profile.repos
+				});
+			});
+		},
+		render: function render() {
+			return _react2.default.createElement(_widgetProfile2.default, { name: this.state.name, imageUrl: this.state.imageUrl, twitter: this.state.twitter, worksOn: this.state.worksOn, repos: this.state.repos });
+		}
+	});
+	
+	exports.default = WidgetProfileContainer;
+
+/***/ },
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25296,26 +25548,52 @@
 		render: function render() {
 			return _react2.default.createElement(
 				"div",
-				{ className: "WidgetProfile" },
+				{ className: "widget-profile" },
+				_react2.default.createElement("img", { src: this.props.imageUrl }),
 				_react2.default.createElement(
-					"header",
-					{ className: "WidgetProfile-header" },
+					"div",
+					{ className: "details" },
 					_react2.default.createElement(
 						"h1",
 						null,
-						"Widget profile for widgetId: ",
-						this.props.params.widgetId
+						this.props.name
+					),
+					_react2.default.createElement(
+						"a",
+						{ href: 'http://twitter.com/' + this.props.twitter },
+						"@",
+						this.props.twitter
+					),
+					_react2.default.createElement(
+						"p",
+						null,
+						"Works on ",
+						_react2.default.createElement(
+							"strong",
+							null,
+							this.props.worksOn
+						)
+					),
+					_react2.default.createElement(
+						"h3",
+						null,
+						"Github Repos:"
+					),
+					_react2.default.createElement(
+						"ul",
+						{ "class": "repos" },
+						this.props.repos.map(function (repo) {
+							return _react2.default.createElement(
+								"li",
+								{ key: repo.id },
+								_react2.default.createElement(
+									"a",
+									{ href: repo.html_url },
+									repo.name
+								)
+							);
+						})
 					)
-				),
-				_react2.default.createElement(
-					"main",
-					null,
-					"Widget profile content"
-				),
-				_react2.default.createElement(
-					"footer",
-					{ className: "WidgetProfile-footer" },
-					"Widget Footer"
 				)
 			);
 		}

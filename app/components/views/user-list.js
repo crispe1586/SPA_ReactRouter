@@ -4,14 +4,21 @@ import {Link} from 'react-router';
 const UserList = React.createClass({
 	render: function(){
 		return(
-			<div className="UserList">
-				<ul className="user-list">
-					<li><Link to="users/1">Miguel</Link></li>
-					<li><Link to="users/2">Cristina</Link></li>
-					<li><Link to="users/3">Juana</Link></li>
-					<li><Link to="users/4">Fernanda</Link></li>
-					<li><Link to="users/5">Antonia</Link></li>
-				</ul>
+			<div className="data-list">
+				{this.props.users.map(function(user){
+					return(
+						<div key={user.id} className="data-list-item">
+							<div className="details">
+								<Link to={'/users/'+user.id}>{user.name}</Link>
+							</div>
+							<div className="controls">
+								<button onClick={this.props.deleteUser.bind(null,user.id)} className="delete">Delete</button>
+							</div>
+						</div>
+					);
+				})};
+
+
 			</div>
 		);
 	}
